@@ -1,4 +1,3 @@
-
 /*-
  * Copyright (c) 2016 Adam Starak <starak.adam@gmail.com>
  * All rights reserved.
@@ -30,6 +29,8 @@
  * $FreeBSD$
  */
 
+// TODO: co w przypadku uzycia zlej funkcji dla danego cookie?
+
 #include <sys/cdefs.h>
 __FBSDID("$FreeBSD$");
 
@@ -53,17 +54,14 @@ __FBSDID("$FreeBSD$");
 #include <sys/dnv.h>
 #include <sys/nv.h>
 
-#include "cnv.h"
 #include "nv_impl.h"
 
 #define	CNVLIST_GET(ftype, type, nvtype)				\
 ftype									\
 cnvlist_get_##type(void **cookiep)					\
 {									\
-									\
 	if (nvpair_type(*cookiep) == NV_TYPE_##nvtype)			\
 		return (nvpair_get_##type(*cookiep));			\
-	return (NULL);							\
 }
 
 CNVLIST_GET(bool, bool, BOOL)
@@ -82,7 +80,6 @@ cnvlist_get_binary(void **cookiep, size_t *sizep)
 		value = nvpair_get_binary(*cookiep, sizep);
 		return (value);
 	}
-	return (NULL);
 }
 
 #define	CNVLIST_TAKE(ftype, type, nvtype)			    	\
@@ -124,6 +121,4 @@ CNVLIST_FREE(const nvlist_t *, nvlist, NVLIST)
 CNVLIST_FREE(int, descriptor, DESCRIPTOR)
 
 #undef	CNVLIST_TAKE
-
-
 
